@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 00:04:45 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 00:20:13 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	*ft_routine(void *arg)
 	while (philo->dead == 0 && philo->full == 0)
 	{
 		ft_eat(philo);
-		if (philo->env->n_must_eat > 0 && philo->n_eaten == philo->env->n_must_eat)
+		if (philo->env->n_must_eat > 0 &&
+			philo->n_eaten == philo->env->n_must_eat)
 		{
 			philo->full = 1;
 			break ;
@@ -38,16 +39,14 @@ void	*ft_routine(void *arg)
 
 void	*ft_dead_monitor(void *p)
 {
-	t_philo	*philo;
-	long	now;
-	int		i;
-	struct timeval	tv;
-	
+	t_philo		*philo;
+	long		now;
+	int			i;
+
 	philo = (t_philo*)p;
 	while (philo->dead == 0 && philo->full == 0)
 	{
-		gettimeofday(&tv, NULL);
-		now = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+		now = ft_get_time();
 		i = 0;
 		if (now - philo->t_last_eat > philo->env->t_to_die)
 		{
@@ -76,15 +75,16 @@ int		ft_make_thread(t_env *env)
 		if (ft_init_philo(env, i))
 			return (ft_putstr("Error : malloc\n"));
 		env->i = i;
-		if (pthread_create(&(env->p[i]->th_id), NULL, ft_routine, (void *)env->p[i]) != 0)
+		if (pthread_create(&(env->p[i]->th_id),
+			NULL, ft_routine, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
 		pthread_detach(env->p[i]->th_id);
-		usleep(100);
 	}
 	i = -1;
 	while (++i < env->n_philo)
 	{
-		if (pthread_create(&th_id, NULL, &ft_dead_monitor, (void *)env->p[i]) != 0)
+		if (pthread_create(&th_id, NULL,
+			&ft_dead_monitor, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
 		pthread_detach(th_id);
 	}

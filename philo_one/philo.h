@@ -6,13 +6,12 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 23:26:03 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 00:16:24 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-# include <stdio.h> // 테스트용
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
@@ -27,7 +26,7 @@
 struct s_env;
 
 typedef struct			s_philo
-{	
+{
 	pthread_t			th_id;
 	int					index;
 	long				t_last_eat;
@@ -38,9 +37,9 @@ typedef struct			s_philo
 	int					dead;
 	struct s_env		*env;
 }						t_philo;
-	
+
 typedef struct			s_env
-{		
+{
 	int					n_philo;
 	long				t_to_die;
 	long				t_to_eat;
@@ -69,6 +68,9 @@ int						ft_init_mutex(t_env *env);
 void					ft_put_msg(t_philo *philo, int event_t);
 void					ft_my_sleep(long t_sleep);
 char					*ft_strjoin(char *s1, char *s2, int free_case);
-int		ft_strlen(const char *str);
-char	*ft_itoa(long n);
+int						ft_strlen(const char *str);
+char					*ft_itoa(long n);
+int						ft_putchar(int c);
+int						ft_isdigit(int c);
+int						ft_isspace(int c);
 #endif

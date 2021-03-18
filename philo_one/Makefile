@@ -1,8 +1,8 @@
 NAME = philo_one
-CC = gcc #-g3 -fsanitize=address
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c util.c action.c exit.c messages.c init.c
+SRCS = main.c util.c action.c exit.c messages.c init.c util_str.c util_num.c 
 OBJS = $(SRCS:.c=.o)
 LIBS = -lpthread
 
