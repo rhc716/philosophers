@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 22:13:43 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:59:36 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@ void	*ft_dead_monitor(void *p)
 	t_philo	*philo;
 	long	now;
 	int		i;
-
+	struct timeval	tv;
+	
 	philo = (t_philo*)p;
 	while (philo->dead == 0 && philo->full == 0)
 	{
-		now = ft_get_time();
+		gettimeofday(&tv, NULL);
+		now = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 		i = 0;
 		if (now - philo->t_last_eat > philo->env->t_to_die)
 		{
