@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 22:59:36 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 23:50:03 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ int		ft_make_thread(t_env *env)
 		if (pthread_create(&(env->p[i]->th_id), NULL, ft_routine, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
 		pthread_detach(env->p[i]->th_id);
-	}
-	i = -1;
-	while (++i < env->n_philo)
-	{
 		if (pthread_create(&th_id, NULL, &ft_dead_monitor, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
 		pthread_detach(th_id);
