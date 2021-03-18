@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 19:22:42 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 22:51:04 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:56:50 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void		ft_eat(t_philo *philo)
 {
+	struct timeval	tv;
+	long			time;
+
+	gettimeofday(&tv, NULL);
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	pthread_mutex_lock(&philo->env->forks[philo->l_fork]);
 	pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
 	pthread_mutex_lock(&philo->env->print);
 	ft_put_msg(philo, EVENT_FORK);
 	pthread_mutex_unlock(&philo->env->print);
-	philo->t_last_eat = ft_get_time();
+	philo->t_last_eat = time;
 	philo->n_eaten++;
 	pthread_mutex_lock(&philo->env->print);
 	ft_put_msg(philo, EVENT_EAT);
