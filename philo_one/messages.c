@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 19:59:40 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 22:48:53 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:53:35 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	ft_put_msg(t_philo *philo, int event_t)
 {
-	long time;
+	struct timeval	tv;
+	long			time;
 
-	time = ft_get_time() -philo->env->start;
+	gettimeofday(&tv, NULL);
+	
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - philo->env->start;
 	if (event_t == EVENT_FORK)
 	{
 		ft_putnbr_fd(time, 1);
