@@ -1,5 +1,5 @@
 NAME = philo_one
-CC = gcc -g3 -fsanitize=address
+CC = gcc #-g3 -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = main.c util.c action.c exit.c messages.c init.c
