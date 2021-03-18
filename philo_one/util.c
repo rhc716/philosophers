@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:09:14 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 19:15:22 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 19:37:02 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	ft_my_sleep(long t_sleep)
 
 long	ft_get_time(void)
 {
-	static struct timeval tv;
+	struct timeval tv;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * (long)1000) + (tv.tv_usec / (long)1000));
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 int		ft_isspace(int c)

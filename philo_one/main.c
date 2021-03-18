@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 19:13:54 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 20:03:53 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	*ft_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_detach(philo->th_id);
+	if (philo->index % 2 == 1)
+		ft_my_sleep(1);
 	while (philo->dead == 0 && philo->full == 0)
 	{
 		ft_take_fork(philo);
@@ -39,26 +41,20 @@ void	*ft_routine(void *arg)
 void	*ft_dead_monitor(void *p)
 {
 	t_philo	*philo;
-	long	n1;
-	long	n2;
 	long	now;
 
 	philo = (t_philo*)p;
 	while (philo && philo->dead == 0 && philo->full == 0)
 	{
 		now = ft_get_time();
-		if ((n1 = now - philo->t_last_eat) > philo->env->t_to_die ||
-			(philo->n_eaten == 0 &&
-			(n2 = now - philo->env->start) > philo->env->t_to_die))
+		if (now - philo->t_last_eat > philo->env->t_to_die)
 		{
-			printf("n1 : %ld\n", n1);
-			printf("n2 : %ld\n", n2);
 			ft_die(philo);
 			philo->dead = 1;
 			pthread_mutex_unlock(&philo->env->end);
 			return (0);
 		}
-		usleep(1000);
+		ft_my_sleep(1);
 	}
 	return (0);
 }
@@ -80,7 +76,7 @@ int		ft_make_thread(t_env *env)
 		env->i = i;
 		if (pthread_create(&(env->p[i]->th_id), NULL, ft_routine, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
-		usleep(100);
+		//usleep(100);
 	}
 	return (0);
 }

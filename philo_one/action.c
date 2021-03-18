@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 19:22:42 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 19:12:29 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 19:53:32 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,12 @@
 
 void		ft_take_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
 	pthread_mutex_lock(&philo->env->forks[philo->l_fork]);
+	pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
 	pthread_mutex_lock(&philo->env->print);
 	ft_put_msg(philo, EVENT_FORK);
 	ft_put_msg(philo, EVENT_FORK);
 	pthread_mutex_unlock(&philo->env->print);
-	/*
-	if (philo->index % 2 == 0)
-	{
-		pthread_mutex_lock(&philo->env->forks[philo->l_fork]);
-		pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
-		pthread_mutex_lock(&philo->env->print);
-		ft_put_msg(philo, EVENT_FORK);
-		ft_put_msg(philo, EVENT_FORK);
-		pthread_mutex_unlock(&philo->env->print);
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
-		pthread_mutex_lock(&philo->env->forks[philo->l_fork]);
-		pthread_mutex_lock(&philo->env->print);
-		ft_put_msg(philo, EVENT_FORK);
-		ft_put_msg(philo, EVENT_FORK);
-		pthread_mutex_unlock(&philo->env->print);
-	}
-	*/
 }
 
 void		ft_eat(t_philo *philo)
