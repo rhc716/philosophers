@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 23:52:00 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 00:04:45 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ void	*ft_dead_monitor(void *p)
 				philo->env->p[i]->dead = 1;
 			return (0);
 		}
-		while (i < 200)
-			i++;
+		usleep(1000);
 	}
 	return (0);
 }
