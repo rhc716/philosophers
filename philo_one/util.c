@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:09:14 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 22:17:45 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:41:46 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ void	ft_my_sleep(long t_sleep)
 	{
 		gettimeofday(&tv, NULL);
 		now = tv.tv_sec * 1000000 + tv.tv_usec;
-		if (now >= end)
+		if (now < end)
+			usleep(800);
+		else
 			return ;
-		usleep(500);
 	}
 }
 
