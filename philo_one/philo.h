@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 22:08:43 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 23:26:03 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,7 @@ int						ft_init_philo(t_env *env, int i);
 int						ft_init_mutex(t_env *env);
 void					ft_put_msg(t_philo *philo, int event_t);
 void					ft_my_sleep(long t_sleep);
+char					*ft_strjoin(char *s1, char *s2, int free_case);
+int		ft_strlen(const char *str);
+char	*ft_itoa(long n);
 #endif
