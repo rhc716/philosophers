@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 18:22:38 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 19:13:54 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		ft_make_thread(t_env *env)
 	pthread_t	th_id;
 
 	i = -1;
+	env->start = ft_get_time();
 	while (++i < env->n_philo)
 	{
 		if (ft_init_philo(env, i))

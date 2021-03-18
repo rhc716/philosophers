@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 20:40:46 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 16:23:40 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 19:13:39 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int		ft_parse_env(int argc, char **argv, t_env *env)
 	env->t_to_eat = ft_atoi(argv[3]);
 	env->t_to_sleep = ft_atoi(argv[4]);
 	env->i = 0;
-	env->start = ft_get_time();
 	env->n_finished = 0;
 	if (argc == 6)
 		env->n_must_eat = ft_atoi(argv[5]);
