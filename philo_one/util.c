@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:09:14 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 21:02:20 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:17:45 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 
 void	ft_my_sleep(long t_sleep)
 {
-	long	end;
-	long	now;
+	struct timeval	tv;
+	long			end;
+	long			now;
 
-	end = ft_get_time() + t_sleep;
+	gettimeofday(&tv, NULL);
+	end = tv.tv_sec * 1000000 + tv.tv_usec + t_sleep * 1000;
 	while (1)
 	{
-		now = ft_get_time();
+		gettimeofday(&tv, NULL);
+		now = tv.tv_sec * 1000000 + tv.tv_usec;
 		if (now >= end)
 			return ;
-		usleep(50);
+		usleep(500);
 	}
 }
 

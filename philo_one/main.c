@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 21:10:08 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:13:43 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ void	*ft_routine(void *arg)
 		ft_my_sleep(3);
 	while (philo->dead == 0 && philo->full == 0)
 	{
-		ft_take_fork(philo);
 		ft_eat(philo);
 		if (philo->env->n_must_eat > 0 && philo->n_eaten == philo->env->n_must_eat)
 		{
 			philo->full = 1;
 			break ;
 		}
-		ft_sleep(philo);
-		ft_think(philo);
+		ft_sleep_and_think(philo);
 	}
 	if (philo->full == 1 && ++(philo->env->n_finished) == philo->env->n_philo)
 		pthread_mutex_unlock(&philo->env->end);
@@ -42,19 +40,25 @@ void	*ft_dead_monitor(void *p)
 {
 	t_philo	*philo;
 	long	now;
+	int		i;
 
 	philo = (t_philo*)p;
 	while (philo->dead == 0 && philo->full == 0)
 	{
 		now = ft_get_time();
+		i = 0;
 		if (now - philo->t_last_eat > philo->env->t_to_die)
 		{
 			ft_die(philo);
-			philo->dead = 1;
+			pthread_mutex_lock(&philo->env->print);
 			pthread_mutex_unlock(&philo->env->end);
+			i = -1;
+			while (++i < philo->env->n_philo)
+				philo->env->p[i]->dead = 1;
 			return (0);
 		}
-		usleep(1000);
+		while (i < 200)
+			i++;
 	}
 	return (0);
 }
@@ -70,11 +74,15 @@ int		ft_make_thread(t_env *env)
 	{
 		if (ft_init_philo(env, i))
 			return (ft_putstr("Error : malloc\n"));
-		if (pthread_create(&th_id, NULL, &ft_dead_monitor, (void *)env->p[i]) != 0)
-			return (ft_putstr("Error : pthread_create error\n"));
-		pthread_detach(th_id);
 		env->i = i;
 		if (pthread_create(&(env->p[i]->th_id), NULL, ft_routine, (void *)env->p[i]) != 0)
+			return (ft_putstr("Error : pthread_create error\n"));
+		pthread_detach(env->p[i]->th_id);
+	}
+	i = -1;
+	while (++i < env->n_philo)
+	{
+		if (pthread_create(&th_id, NULL, &ft_dead_monitor, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
 		pthread_detach(th_id);
 	}
@@ -97,6 +105,5 @@ int		main(int argc, char **argv)
 		return (ft_clear(env, 1) && ft_putstr("Error : malloc\n"));
 	ft_make_thread(env);
 	pthread_mutex_lock(&env->end);
-	pthread_mutex_lock(&env->print);
 	return (ft_clear(env, 0));
 }

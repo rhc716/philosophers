@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 18:38:35 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 22:08:43 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,8 @@ typedef struct			s_env
 long					ft_atoi(const char *str);
 int						ft_putstr(char const *s);
 long					ft_get_time(void);
-void					ft_take_fork(t_philo *philo);
 void					ft_eat(t_philo *philo);
-void					ft_sleep(t_philo *philo);
-void					ft_think(t_philo *philo);
+void					ft_sleep_and_think(t_philo *philo);
 void					ft_die(t_philo *philo);
 void					ft_putnbr_fd(long n, int fd);
 int						ft_clear(t_env *env, int clear_case);
