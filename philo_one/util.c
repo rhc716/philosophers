@@ -6,11 +6,25 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:09:14 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 17:13:42 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 19:04:11 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
+
+void	ft_my_sleep(long t_sleep)
+{
+	long	end;
+	long	now;
+
+	now = ft_get_time();
+	end = now + t_sleep;
+	while (now < end)
+	{
+		now = ft_get_time();
+		usleep(100);
+	}
+}
 
 long	ft_get_time(void)
 {
@@ -81,15 +95,7 @@ void	ft_putnbr_fd(long n, int fd)
 	long	nbr;
 	char	c;
 
-	if (fd < 0)
-		return ;
-	if (n < 0)
-	{
-		write(fd, "-", 1);
-		nbr = n * -1;
-	}
-	else
-		nbr = n;
+	nbr = n;
 	if (nbr >= 10)
 		ft_putnbr_fd(nbr / 10, fd);
 	c = nbr % 10 + '0';

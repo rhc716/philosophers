@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 17:56:34 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 18:22:38 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	*ft_dead_monitor(void *p)
 			(philo->n_eaten == 0 &&
 			(n2 = now - philo->env->start) > philo->env->t_to_die))
 		{
-			//printf("n1 : %ld\n", n1);
-			//printf("n2 : %ld\n", n2);
+			printf("n1 : %ld\n", n1);
+			printf("n2 : %ld\n", n2);
 			ft_die(philo);
 			philo->dead = 1;
 			pthread_mutex_unlock(&philo->env->end);

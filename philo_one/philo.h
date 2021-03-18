@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/17 23:07:06 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 18:38:35 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,5 @@ int						ft_parse_env(int argc, char **argv, t_env *env);
 int						ft_init_philo(t_env *env, int i);
 int						ft_init_mutex(t_env *env);
 void					ft_put_msg(t_philo *philo, int event_t);
-
+void					ft_my_sleep(long t_sleep);
 #endif

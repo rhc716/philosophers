@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 19:22:42 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 18:05:36 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 19:02:41 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,24 @@
 
 void		ft_take_fork(t_philo *philo)
 {
-	if ((philo->index + 1) > (philo->env->n_philo / 2))
+	if (philo->index % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->env->forks[philo->l_fork]);
-		pthread_mutex_lock(&philo->env->print);
-		ft_put_msg(philo, EVENT_FORK);
-		pthread_mutex_unlock(&philo->env->print);
 		pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
 		pthread_mutex_lock(&philo->env->print);
+		ft_put_msg(philo, EVENT_FORK);
 		ft_put_msg(philo, EVENT_FORK);
 		pthread_mutex_unlock(&philo->env->print);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->env->forks[philo->r_fork]);
-		pthread_mutex_lock(&philo->env->print);
-		ft_put_msg(philo, EVENT_FORK);
-		pthread_mutex_unlock(&philo->env->print);
 		pthread_mutex_lock(&philo->env->forks[philo->l_fork]);
 		pthread_mutex_lock(&philo->env->print);
 		ft_put_msg(philo, EVENT_FORK);
+		ft_put_msg(philo, EVENT_FORK);
 		pthread_mutex_unlock(&philo->env->print);
-	}	
+	}
 }
 
 void		ft_eat(t_philo *philo)
@@ -45,9 +41,9 @@ void		ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->env->print);
 	ft_put_msg(philo, EVENT_EAT);
 	pthread_mutex_unlock(&philo->env->print);
-	usleep(philo->env->t_to_eat * 1000);
-	pthread_mutex_unlock(&philo->env->forks[philo->r_fork]);
+	ft_my_sleep(philo->env->t_to_eat);
 	pthread_mutex_unlock(&philo->env->forks[philo->l_fork]);
+	pthread_mutex_unlock(&philo->env->forks[philo->r_fork]);
 }
 
 void		ft_sleep(t_philo *philo)
@@ -55,7 +51,7 @@ void		ft_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->env->print);
 	ft_put_msg(philo, EVENT_SLEEP);
 	pthread_mutex_unlock(&philo->env->print);
-	usleep(philo->env->t_to_sleep * 1000);
+	ft_my_sleep(philo->env->t_to_sleep);
 }
 
 void		ft_think(t_philo *philo)
