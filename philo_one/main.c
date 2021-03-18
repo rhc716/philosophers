@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 20:18:45 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 21:10:08 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ void	*ft_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_detach(philo->th_id);
 	if (philo->index % 2 == 1)
-		ft_my_sleep(1);
+		ft_my_sleep(3);
 	while (philo->dead == 0 && philo->full == 0)
 	{
 		ft_take_fork(philo);
@@ -55,7 +54,7 @@ void	*ft_dead_monitor(void *p)
 			pthread_mutex_unlock(&philo->env->end);
 			return (0);
 		}
-		ft_my_sleep(1);
+		usleep(1000);
 	}
 	return (0);
 }
@@ -77,6 +76,7 @@ int		ft_make_thread(t_env *env)
 		env->i = i;
 		if (pthread_create(&(env->p[i]->th_id), NULL, ft_routine, (void *)env->p[i]) != 0)
 			return (ft_putstr("Error : pthread_create error\n"));
+		pthread_detach(th_id);
 	}
 	return (0);
 }

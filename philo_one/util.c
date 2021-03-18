@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:09:14 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/18 19:37:02 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/18 21:02:20 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ void	ft_my_sleep(long t_sleep)
 	long	end;
 	long	now;
 
-	now = ft_get_time();
-	end = now + t_sleep;
-	while (now < end)
+	end = ft_get_time() + t_sleep;
+	while (1)
 	{
 		now = ft_get_time();
+		if (now >= end)
+			return ;
 		usleep(50);
 	}
 }
