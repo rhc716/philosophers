@@ -1,10 +1,10 @@
-NAME = philo_three
-CC = gcc
+NAME = philo_two
+CC = gcc# -g3 -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c
+SRCS = main.c util.c action.c exit.c messages.c init.c util_str.c util_num.c 
 OBJS = $(SRCS:.c=.o)
-LIBS = #-lpthread
+LIBS = -lpthread
 
 all: $(NAME)
 
@@ -19,7 +19,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	
+
 re: fclean all
 
 .PHONY: all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 15:35:27 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 16:49:04 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
+# include <fcntl.h>
 # include <stdlib.h>
 
 # define EVENT_FORK		0
@@ -22,6 +24,10 @@
 # define EVENT_SLEEP	2
 # define EVENT_THINK	3
 # define EVENT_DIED		4
+
+# define SEM_FORKS		"pSem_forks"
+# define SEM_PRINT		"pSem_print"
+# define SEM_END		"pSem_end"
 
 struct s_env;
 
@@ -49,9 +55,9 @@ typedef struct			s_env
 	int					i;
 	long				start;
 	t_philo				**p;
-	pthread_mutex_t		*forks;
-	pthread_mutex_t		print;
-	pthread_mutex_t		end;
+	sem_t				*forks_sem;
+	sem_t				*print_sem;
+	sem_t				*end_sem;
 }						t_env;
 
 long					ft_atoi(const char *str);

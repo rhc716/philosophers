@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 15:35:36 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 16:53:46 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	*ft_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->index % 2 == 1)
-		ft_my_sleep(3);
 	while (philo->dead == 0 && philo->full == 0)
 	{
 		ft_eat(philo);
@@ -31,7 +29,7 @@ void	*ft_routine(void *arg)
 		ft_sleep_and_think(philo);
 	}
 	if (philo->full == 1 && ++(philo->env->n_finished) == philo->env->n_philo)
-		pthread_mutex_unlock(&philo->env->end);
+		sem_post(philo->env->end_sem);
 	ft_my_sleep(100);
 	free(philo);
 	return (0);
@@ -51,8 +49,8 @@ void	*ft_dead_monitor(void *p)
 		if (now - philo->t_last_eat > philo->env->t_to_die)
 		{
 			ft_die(philo);
-			pthread_mutex_lock(&philo->env->print);
-			pthread_mutex_unlock(&philo->env->end);
+			sem_wait(philo->env->print_sem);
+			sem_post(philo->env->end_sem);
 			i = -1;
 			while (++i < philo->env->n_philo)
 				philo->env->p[i]->dead = 1;
@@ -106,6 +104,6 @@ int		main(int argc, char **argv)
 	if (ft_init_mutex(env))
 		return (ft_clear(env) && ft_putstr("Error : malloc\n"));
 	ft_make_thread(env);
-	pthread_mutex_lock(&env->end);
+	sem_wait(env->end_sem);
 	return (ft_clear(env));
 }

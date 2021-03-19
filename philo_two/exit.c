@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 20:39:45 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 15:35:19 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 16:50:50 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 int		ft_clear(t_env *env)
 {
-	int i;
-
 	free(env->p);
-	pthread_mutex_destroy(&env->print);
-	pthread_mutex_destroy(&env->end);
-	i = 0;
-	while (i < env->n_philo)
-		pthread_mutex_destroy(&env->forks[i++]);
-	free(env->forks);
+	sem_unlink(SEM_PRINT);
+	sem_unlink(SEM_END);
+	sem_unlink(SEM_FORKS);
+	sem_close(env->print_sem);
+	sem_close(env->end_sem);
+	sem_close(env->forks_sem);
 	return (0);
 }
