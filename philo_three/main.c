@@ -6,19 +6,19 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 21:14:54 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 22:04:46 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
+
+int		g_monitor_end;
 
 void	*ft_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->index % 2 == 1)
-		ft_my_sleep(3);
 	while (philo->dead == 0 && philo->full == 0)
 	{
 		ft_eat(philo);
@@ -31,10 +31,9 @@ void	*ft_routine(void *arg)
 		ft_sleep_and_think(philo);
 	}
 	if (philo->full == 1 && ++(philo->env->n_finished) == philo->env->n_philo)
-		pthread_mutex_unlock(&philo->env->end);
+		sem_post(philo->env->end_sem);
 	ft_my_sleep(100);
-	free(philo);
-	return (0);
+	exit(0);
 }
 
 void	*ft_dead_monitor(void *p)
@@ -44,15 +43,15 @@ void	*ft_dead_monitor(void *p)
 	int			i;
 
 	philo = (t_philo*)p;
-	while (philo->dead == 0 && philo->full == 0)
+	while (g_monitor_end == 0 && philo->dead == 0 && philo->full == 0)
 	{
 		now = ft_get_time();
 		i = 0;
 		if (now - philo->t_last_eat > philo->env->t_to_die)
 		{
 			ft_die(philo);
-			pthread_mutex_lock(&philo->env->print);
-			pthread_mutex_unlock(&philo->env->end);
+			sem_wait(philo->env->print_sem);
+			sem_post(philo->env->end_sem);
 			i = -1;
 			while (++i < philo->env->n_philo)
 				philo->env->p[i]->dead = 1;
@@ -75,10 +74,10 @@ int		ft_make_thread(t_env *env)
 		if (ft_init_philo(env, i))
 			return (ft_putstr("Error : malloc\n"));
 		env->i = i;
-		if (pthread_create(&(env->p[i]->th_id),
-			NULL, ft_routine, (void *)env->p[i]) != 0)
-			return (ft_putstr("Error : pthread_create error\n"));
-		pthread_detach(env->p[i]->th_id);
+		if ((env->p[i]->pid = fork()) < 0)
+			return (ft_putstr("Error : fork\n"));
+		if (env->p[i]->pid == 0)
+			(ft_routine((void *)env->p[i]));
 	}
 	i = -1;
 	while (++i < env->n_philo)
@@ -106,6 +105,6 @@ int		main(int argc, char **argv)
 	if (ft_init_mutex(env))
 		return (ft_clear(env) && ft_putstr("Error : malloc\n"));
 	ft_make_thread(env);
-	pthread_mutex_lock(&env->end);
+	sem_wait(env->end_sem);
 	return (ft_clear(env));
 }
