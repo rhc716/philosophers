@@ -6,35 +6,14 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 22:26:07 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 22:58:51 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
 int		g_monitor_end;
-
-void	*ft_routine(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (philo->dead == 0 && philo->full == 0)
-	{
-		ft_eat(philo);
-		if (philo->env->n_must_eat > 0 &&
-			philo->n_eaten == philo->env->n_must_eat)
-		{
-			philo->full = 1;
-			break ;
-		}
-		ft_sleep_and_think(philo);
-	}
-	if (philo->full == 1 && ++(philo->env->n_finished) == philo->env->n_philo)
-		sem_post(philo->env->end_sem);
-	ft_my_sleep(100);
-	exit(0);
-}
+int		n_finished;
 
 void	*ft_dead_monitor(void *p)
 {
@@ -62,10 +41,36 @@ void	*ft_dead_monitor(void *p)
 	return (0);
 }
 
+int		ft_routine(void *arg)
+{
+	t_philo		*philo;
+	pthread_t	th_id;
+
+	philo = (t_philo *)arg;
+	if (pthread_create(&th_id, NULL,
+		&ft_dead_monitor, (void *)philo) != 0)
+		return (ft_putstr("Error : pthread_create error\n"));
+	pthread_detach(th_id);
+	while (philo->dead == 0 && philo->full == 0)
+	{
+		ft_eat(philo);
+		if (philo->env->n_must_eat > 0 &&
+			philo->n_eaten == philo->env->n_must_eat)
+		{
+			philo->full = 1;
+			break ;
+		}
+		ft_sleep_and_think(philo);
+	}
+	if (philo->full == 1 && ++n_finished == philo->env->n_philo)
+		sem_post(philo->env->end_sem);
+	ft_my_sleep(100);
+	return (0);
+}
+
 int		ft_make_thread(t_env *env)
 {
 	int			i;
-	pthread_t	th_id;
 
 	i = -1;
 	env->start = ft_get_time();
@@ -77,15 +82,10 @@ int		ft_make_thread(t_env *env)
 		if ((env->p[i]->pid = fork()) < 0)
 			return (ft_putstr("Error : fork\n"));
 		if (env->p[i]->pid == 0)
-			(ft_routine((void *)env->p[i]));
-	}
-	i = -1;
-	while (++i < env->n_philo)
-	{
-		if (pthread_create(&th_id, NULL,
-			&ft_dead_monitor, (void *)env->p[i]) != 0)
-			return (ft_putstr("Error : pthread_create error\n"));
-		pthread_detach(th_id);
+		{
+			ft_routine((void *)env->p[i]);
+			exit(0);
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 22:17:43 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 22:52:24 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 
 struct s_env;
 extern int				g_monitor_end;
+extern int				n_finished;
 
 typedef struct			s_philo
 {
@@ -55,7 +56,6 @@ typedef struct			s_env
 	long				t_to_eat;
 	long				t_to_sleep;
 	int					n_must_eat;
-	int					n_finished;
 	int					i;
 	long				start;
 	t_philo				**p;
