@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 20:40:46 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 16:49:45 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 17:04:34 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int		ft_init_philo(t_env *env, int i)
 
 int		ft_init_mutex(t_env *env)
 {
+	sem_unlink(SEM_PRINT);
+	sem_unlink(SEM_END);
+	sem_unlink(SEM_FORKS);
 	env->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644, env->n_philo);
 	env->print_sem = sem_open(SEM_PRINT, O_CREAT, 0644, 1);
 	env->end_sem = sem_open(SEM_END, O_CREAT, 0644, 1);
