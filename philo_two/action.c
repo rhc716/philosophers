@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 19:22:42 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 17:12:37 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 19:58:01 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 void		ft_eat(t_philo *philo)
 {
 	sem_wait(philo->env->forks_sem);
+	sem_wait(philo->env->print_sem);
+	ft_put_msg(philo, EVENT_FORK);
+	sem_post(philo->env->print_sem);
 	sem_wait(philo->env->forks_sem);
 	sem_wait(philo->env->print_sem);
 	ft_put_msg(philo, EVENT_FORK);
