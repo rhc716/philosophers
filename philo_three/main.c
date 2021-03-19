@@ -6,14 +6,11 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 22:58:51 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 23:44:24 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
-
-int		g_monitor_end;
-int		n_finished;
 
 void	*ft_dead_monitor(void *p)
 {
@@ -22,7 +19,7 @@ void	*ft_dead_monitor(void *p)
 	int			i;
 
 	philo = (t_philo*)p;
-	while (g_monitor_end == 0 && philo->dead == 0 && philo->full == 0)
+	while (philo->dead == 0 && philo->full == 0)
 	{
 		now = ft_get_time();
 		i = 0;
@@ -41,14 +38,25 @@ void	*ft_dead_monitor(void *p)
 	return (0);
 }
 
+void	*ft_full_wait(void *arg)
+{
+	t_philo		*philo;
+
+	philo = (t_philo *)arg;
+	sem_wait(philo->env->full_sem);
+	return (0);
+}
+
 int		ft_routine(void *arg)
 {
 	t_philo		*philo;
 	pthread_t	th_id;
 
 	philo = (t_philo *)arg;
-	if (pthread_create(&th_id, NULL,
-		&ft_dead_monitor, (void *)philo) != 0)
+	if (pthread_create(&th_id, NULL, &ft_dead_monitor, (void *)philo) != 0)
+		return (ft_putstr("Error : pthread_create error\n"));
+	pthread_detach(th_id);
+	if (pthread_create(&th_id, NULL, &ft_full_wait, (void *)philo) != 0)
 		return (ft_putstr("Error : pthread_create error\n"));
 	pthread_detach(th_id);
 	while (philo->dead == 0 && philo->full == 0)
@@ -62,15 +70,15 @@ int		ft_routine(void *arg)
 		}
 		ft_sleep_and_think(philo);
 	}
-	if (philo->full == 1 && ++n_finished == philo->env->n_philo)
-		sem_post(philo->env->end_sem);
+	if (philo->full == 1)
+		sem_post(philo->env->full_sem);
 	ft_my_sleep(100);
 	return (0);
 }
 
 int		ft_make_thread(t_env *env)
 {
-	int			i;
+	int i;
 
 	i = -1;
 	env->start = ft_get_time();
@@ -90,9 +98,20 @@ int		ft_make_thread(t_env *env)
 	return (0);
 }
 
-int		main(int argc, char **argv)
+void	*ft_full_end(void *arg)
 {
 	t_env	*env;
+
+	env = (t_env *)arg;
+	sem_wait(env->full_sem);
+	sem_post(env->end_sem);
+	return (0);
+}
+
+int		main(int argc, char **argv)
+{
+	t_env		*env;
+	pthread_t	th_id;
 
 	if (argc < 5 || argc > 6)
 		return (ft_putstr("Error : only 4 or 5 arguments\n"));
@@ -105,6 +124,9 @@ int		main(int argc, char **argv)
 	if (ft_init_mutex(env))
 		return (ft_clear(env) && ft_putstr("Error : malloc\n"));
 	ft_make_thread(env);
+	if (pthread_create(&th_id, NULL, &ft_full_end, (void *)env) != 0)
+		return (ft_clear(env) && ft_putstr("Error : pthread_create error\n"));
+	pthread_detach(th_id);
 	sem_wait(env->end_sem);
 	return (ft_clear(env));
 }

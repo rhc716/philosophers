@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 22:52:24 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 23:27:44 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@
 # define SEM_FORKS		"pSem_forks"
 # define SEM_PRINT		"pSem_print"
 # define SEM_END		"pSem_end"
+# define SEM_FULL		"pSem_full"
 
 struct s_env;
-extern int				g_monitor_end;
-extern int				n_finished;
 
 typedef struct			s_philo
 {
@@ -61,6 +60,7 @@ typedef struct			s_env
 	t_philo				**p;
 	sem_t				*forks_sem;
 	sem_t				*print_sem;
+	sem_t				*full_sem;
 	sem_t				*end_sem;
 }						t_env;
 

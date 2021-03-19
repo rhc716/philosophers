@@ -6,14 +6,11 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 20:40:46 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 22:54:58 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 23:29:54 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
-
-int		g_monitor_end;
-int		n_finished;
 
 int		ft_parse_env(int argc, char **argv, t_env *env)
 {
@@ -22,8 +19,6 @@ int		ft_parse_env(int argc, char **argv, t_env *env)
 	env->t_to_eat = ft_atoi(argv[3]);
 	env->t_to_sleep = ft_atoi(argv[4]);
 	env->i = 0;
-	n_finished = 0;
-	g_monitor_end = 0;
 	if (argc == 6)
 		env->n_must_eat = ft_atoi(argv[5]);
 	else
@@ -58,6 +53,7 @@ int		ft_init_mutex(t_env *env)
 	env->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644, env->n_philo);
 	env->print_sem = sem_open(SEM_PRINT, O_CREAT, 0644, 1);
 	env->end_sem = sem_open(SEM_END, O_CREAT, 0644, 1);
+	env->full_sem = sem_open(SEM_FULL, O_CREAT, 0644, 1);
 	sem_wait(env->end_sem);
 	return (0);
 }
