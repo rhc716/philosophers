@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:17:59 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 23:44:24 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 23:54:46 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,6 @@ void	*ft_dead_monitor(void *p)
 		}
 		usleep(1000);
 	}
-	return (0);
-}
-
-void	*ft_full_wait(void *arg)
-{
-	t_philo		*philo;
-
-	philo = (t_philo *)arg;
-	sem_wait(philo->env->full_sem);
 	return (0);
 }
 
@@ -95,16 +86,6 @@ int		ft_make_thread(t_env *env)
 			exit(0);
 		}
 	}
-	return (0);
-}
-
-void	*ft_full_end(void *arg)
-{
-	t_env	*env;
-
-	env = (t_env *)arg;
-	sem_wait(env->full_sem);
-	sem_post(env->end_sem);
 	return (0);
 }
 

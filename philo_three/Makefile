@@ -2,7 +2,7 @@ NAME = philo_three
 CC = gcc #-g3 -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c util.c action.c exit.c messages.c init.c util_str.c util_num.c 
+SRCS = main.c util.c action.c exit.c messages.c init.c util_str.c util_num.c full.c
 OBJS = $(SRCS:.c=.o)
 LIBS = -lpthread
 

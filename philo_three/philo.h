@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 22:21:27 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 23:27:44 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 23:55:13 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,6 @@ char					*ft_itoa(long n);
 int						ft_putchar(int c);
 int						ft_isdigit(int c);
 int						ft_isspace(int c);
+void					*ft_full_wait(void *arg);
+void					*ft_full_end(void *arg);
 #endif
