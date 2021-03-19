@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 19:59:40 by hroh              #+#    #+#             */
-/*   Updated: 2021/03/19 19:57:37 by hroh             ###   ########.fr       */
+/*   Updated: 2021/03/19 19:58:43 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ void	ft_put_msg(t_philo *philo, int event_t)
 	else if (event_t == EVENT_DIED)
 		buf = ft_strjoin(buf, " died\n", 1);
 	write(1, buf, ft_strlen(buf));
+	if (event_t == EVENT_FORK)
+		write(1, buf, ft_strlen(buf));
 	free(buf);
 }
